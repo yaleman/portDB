@@ -6,7 +6,7 @@ A network port database mini site. I was driven mad by the lack of information o
 Please feel free to add information, the format for notes is going to stay the same, other than adding 
 Markdown support soon.
 
-This is a quick site I built using [Flask](http://flask.pocoo.org) and hosted on [Heroku](http://heroku.com).
+This is a quick site I built using [Flask](http://flask.pocoo.org) and hosted on [Heroku](http://heroku.com). It's also hosted on [Github](https://github.com/yaleman/portdb) if you aren't already there.
 
 # Todo
 
