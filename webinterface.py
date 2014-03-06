@@ -16,16 +16,12 @@ def index():
 	#html = markdown.markdown(your_text_string)
 	retval = ""
 	for d in os.listdir( "data/" ):
-		retval += "<li>{}\n<ul>\n".format( d )
+		retval += "* {}\n".format( d )
 		portlist = os.listdir( "data/{}/".format( d ) )
 		portlist.sort( key=int )
 		for di in portlist:
-			retval += "<li><a href='/view/{}/{}'>{}</a></li>\n".format( d, di, di )
-
-		retval += "</ul></li>"
-	#return 'Hello world'
-	retval += "</ul>"
-	return flask.render_template( "index.html", content=retval )
+			retval += "\t* [{}](/view/{}/{})\n".format( di, d, di )
+	return flask.render_template( "index.html", content=markdown.markdown( retval ) )
 
 @app.route( '/about' )
 def about():
@@ -40,7 +36,7 @@ def getnotes( proto, port ):
 	notes = ""
 	filename_notes = "data/{}/{}/notes".format( proto, port )
 	if( os.path.exists( filename_notes ) ):
-		notes = open( filename_notes, 'r' ).read().decode("utf-8").replace( "\n", "<br />" )
+		notes = markdown.markdown( open( filename_notes, 'r' ).read().decode("utf-8") )
 	else:
 		notes = "{} doesn't exist".format( filename_notes )	
 	return notes
