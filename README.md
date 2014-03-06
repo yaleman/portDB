@@ -1,4 +1,4 @@
-PortDB
+portDB
 ======
 
 A network port database mini site. I was driven mad by the lack of information on ports and the applications they map to, so I've started this database for my own information.
