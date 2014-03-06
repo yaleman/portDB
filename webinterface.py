@@ -15,6 +15,7 @@ app = flask.Flask(__name__)
 def index():
 	""" the site homepage, lists protocols """
 	protocols = [ proto.upper() for proto in os.listdir( "data/" ) ] 
+	protocols.sort()
 	return flask.render_template( "index.html", protocols=protocols )
 
 @app.route( '/about' )
@@ -27,6 +28,7 @@ def viewproto( proto ):
 	""" view a list of ports associated with this protocol """
 	if( os.path.exists ( "data/{}".format( proto.lower() ) ) ):
 		ports = os.listdir( "data/{}".format( proto.lower() ) )
+		ports.sort( key=int)
 		return flask.render_template( "viewproto.html", proto=proto.upper(), ports=ports )
 	else:
 		return index()
