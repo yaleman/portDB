@@ -3,7 +3,11 @@
 {% block navbar %}<h1><a href='/'>PortDB</a></h1>{% endblock %}
 
 {% block content %}
-{{ content|safe }}
+<ul>
+	{% for proto in protocols %}
+	<li><a href='/view/{{ proto }}'>{{ proto }}</a></li>
+	{% endfor %}
+</ul>
 {% endblock %}
 
 

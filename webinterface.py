@@ -13,31 +13,27 @@ app = flask.Flask(__name__)
 
 @app.route( '/' )
 def index():
-	#html = markdown.markdown(your_text_string)
-	retval = ""
-	for d in os.listdir( "data/" ):
-		retval += "* [{}](/view/{})\n".format( d, d )
-		portlist = os.listdir( "data/{}/".format( d ) )
-		portlist.sort( key=int )
-		for di in portlist:
-			retval += "\t* [{}](/view/{}/{})\n".format( di, d, di )
-	return flask.render_template( "index.html", content=markdown.markdown( retval ) )
+	""" the site homepage, lists protocols """
+	protocols = [ proto.upper() for proto in os.listdir( "data/" ) ] 
+	return flask.render_template( "index.html", protocols=protocols )
 
 @app.route( '/about' )
 def about():
+	""" return the README.md file in the default template """
 	return flask.render_template( "about.html", readme=markdown.markdown( open( 'README.md', 'r' ).read() ) )
 
 @app.route( '/view/<proto>', methods=['GET'] )
 def viewproto( proto ):
-	if( os.path.exists ( "data/{}".format( proto ) ) ):
-		ports = os.listdir( "data/{}".format( proto ) )
-		return flask.render_template( "viewproto.html", proto=proto, ports=ports )
+	""" view a list of ports associated with this protocol """
+	if( os.path.exists ( "data/{}".format( proto.lower() ) ) ):
+		ports = os.listdir( "data/{}".format( proto.lower() ) )
+		return flask.render_template( "viewproto.html", proto=proto.upper(), ports=ports )
 	else:
 		return index()
 
 @app.route('/view/<proto>/<int:port>', methods=['GET'] )
 def view( proto, port ):
-	return flask.render_template( "view.html", proto=proto, port=port, notes=getnotes( proto, port ) )
+	return flask.render_template( "view.html", proto=proto.upper(), port=port, notes=getnotes( proto, port ) )
 
 
 def getnotes( proto, port ):
