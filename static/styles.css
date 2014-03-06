@@ -1,0 +1,9 @@
+h1,h2,body { font-family: sans-serif; }
+a, a:visited { color: darkblue; text-decoration: none;}
+a:hover { color: red; }
+body { margin: 10%; margin-top: 5%; background-color: lightgray;}
+div#content
+	{ 
+	background-color: white; 
+	padding: 30px; 
+	}

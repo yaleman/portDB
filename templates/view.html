@@ -1,0 +1,14 @@
+{% extends "basetemplate.html" %}
+
+{% block title %}- {{proto}}/{{port}}{% endblock %}
+
+{% block heading %} - {{proto}}/{{port}}{% endblock %}
+
+
+{% block content %}
+<h2>Notes</h2>
+{{ notes|safe }}<br />
+{% endblock %}
+
+
+
