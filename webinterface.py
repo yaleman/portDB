@@ -16,7 +16,7 @@ def index():
 	#html = markdown.markdown(your_text_string)
 	retval = ""
 	for d in os.listdir( "data/" ):
-		retval += "* {}\n".format( d )
+		retval += "* [{}](/view/{})\n".format( d, d )
 		portlist = os.listdir( "data/{}/".format( d ) )
 		portlist.sort( key=int )
 		for di in portlist:
@@ -26,6 +26,14 @@ def index():
 @app.route( '/about' )
 def about():
 	return flask.render_template( "about.html", readme=markdown.markdown( open( 'README.md', 'r' ).read() ) )
+
+@app.route( '/view/<proto>', methods=['GET'] )
+def viewproto( proto ):
+	if( os.path.exists ( "data/{}".format( proto ) ) ):
+		ports = os.listdir( "data/{}".format( proto ) )
+		return flask.render_template( "viewproto.html", proto=proto, ports=ports )
+	else:
+		return index()
 
 @app.route('/view/<proto>/<int:port>', methods=['GET'] )
 def view( proto, port ):
