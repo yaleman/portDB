@@ -3,7 +3,7 @@ App.use([{
         callback: function() {
             switch (App.docPathEnd) {
                 case 'components.html':
-                    App.use({
+                    /*App.use({
                         dependencies: 'chartcategories',
                         callback: function() {
                             Cascade.drawchart(
@@ -33,12 +33,12 @@ App.use([{
                         }
                     });
                 case 'typography-form.html':
-                    App.use({
+                    /*App.use({
                         dependencies: 'parsley',
                         callback: function() {
                             $('form').parsley();
                         }
-                    });
+                    });*/
                     break;
                 default:
             }
