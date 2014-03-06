@@ -1,17 +1,80 @@
 <!doctype html>
 <head>
-<title>PortDB{% block title %}{% endblock %}</title>
-<link rel='stylesheet' href='{{ url_for( 'static', filename='styles.css' ) }}' />
+<title>portDB{% block title %}{% endblock %}</title>
+<!-- <link rel='stylesheet' href='{{ url_for( 'static', filename='styles.css' ) }}' /> -->
+<link rel='stylesheet' type='text/css' media='all' href='/static/assets/css/cascade/production/build-full.min.css' />
+<link rel="stylesheet" type="text/css" media="all"  href="/static/assets/css/site.css" />
 <link rel="apple-touch-icon" href="{{ url_for( 'static', filename='apple-touch-icon.png' ) }}" />
 </head>
 <body >
-<h1 id='heading'> <img src='{{ url_for( 'static', filename='apple-touch-icon.png' ) }}' id='logo' /> <a href='/'>PortDB</a>{% block heading %}{% endblock %}</h1>
-<div id='navbar'>
-<ul>
-<a href='/'><li>Home</li></a>
-<a href='/about	'><li>About</li></a>
+ <div class="site-header-fixture">
+     <div class="site-header-ghost">
+                <div class="col width-fit mobile-width-fit">
+                    <div class="cell">
+                        <a href="#" class="logo"></a>
+                    </div>
+                </div>
+                <div class="col width-fill mobile-width-fill">
+                    <div class="cell">
+                        <ul class="col nav"><li class='active'><a href='/'>Home</a></li>
+				<li class='active'><a href='/about'>About</a></li>
 </ul>
-</div>
-<div id='content'>{% block content %}{% endblock %}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="site-header">
+                <div class="col width-fit mobile-width-fit">
+                    <div class="cell">
+                        <a href="#" class="logo"></a>
+                    </div>
+                </div>
+                <div class="col width-fill mobile-width-fill">
+                    <div class="cell">
+                        <ul class="col nav">
+                            <li class="active"><li class='active'><a href='/'>Home</a></li>
+				<li class='active'><a href='/about'>About</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+
+<div class="site-body centered-content">
+            <div class="site-center">
+                <div class="cell">
+                    <div class="col">
+                        <div class="cell">
+                            <div class="page-header">
+                                <h1>{% block heading %}{% endblock %}</h1></h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col content">
+                        <div class="col">
+                            <div class="cell">{% block content %}{% endblock %}</div>
+ </div>
+                        </div>
+       </div>
+       <div class="site-center">
+            <div class="site-footer">
+                <div class="col width-fit">
+                    <div class="cell">
+<!--                        <a href="#" class="powered-by"></a> -->
+                    </div>
+                </div>
+                <div class="col width-fill">
+                    <div class="cell pipes">
+                        <ul class="nav">
+                            <li><a href="http://github.com/yaleman/portdb">portDB on github</a></li>
+                            <li><a href="#">Item two</a></li>
+                            <li><a href="#">Item three</a></li>
+                            <li><a href="#">Item four</a></li>
+                            <li><a href="#">Item five</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="assets/js/app.js"></script>
 </body>
