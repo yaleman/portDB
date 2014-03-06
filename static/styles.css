@@ -1,11 +1,22 @@
 h1,h2,body { font-family: sans-serif; }
-a, a:visited { color: darkblue; text-decoration: none;}
+h1#heading { 
+	margin-left: 1.0em;
+	margin-bottom: 0.05em;
+	-webkit-margin-after: 0.05em; 
+	}
+a, a:visited 
+	{ 
+	color: darkblue; 
+	text-decoration: none;
+	}
 a:hover { color: red; }
-body { margin: 10%; margin-top: 5%; background-color: lightgray;}
+body { 
+		margin: 0em;
+	}
 div#content
 	{ 
 	background-color: white; 
-	padding: 30px; 
+	padding: 1.05em; 
 	}
 div#navbar
 	{ 
@@ -13,8 +24,13 @@ div#navbar
 	padding: 5px ; 
 	}
 div#navbar a { color: white; }
-#navbar li { 
+div#navbar li { 
 	display: inline; 
 	list-style: none; 
-	margin-right: 20px;
+	margin-right: 1.0em;
 	}
+img#logo {
+	width: 50px;
+	height: 50px;
+	vertical-align: middle;
+}

@@ -5,7 +5,7 @@
 <link rel="apple-touch-icon" href="{{ url_for( 'static', filename='apple-touch-icon.png' ) }}" />
 </head>
 <body >
-<h1><a href='/'>PortDB</a>{% block heading %}{% endblock %}</h1>
+<h1 id='heading'> <img src='{{ url_for( 'static', filename='apple-touch-icon.png' ) }}' id='logo' /> <a href='/'>PortDB</a>{% block heading %}{% endblock %}</h1>
 <div id='navbar'>
 <ul>
 <a href='/'><li>Home</li></a>
