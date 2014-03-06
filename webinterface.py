@@ -2,7 +2,7 @@
 
 
 import flask
-
+import markdown
 import os
 import re
 
@@ -29,7 +29,7 @@ def index():
 
 @app.route( '/about' )
 def about():
-	return flask.render_template( "about.html" )
+	return flask.render_template( "about.html", readme=markdown.markdown( open( 'README.md', 'r' ).read() ) )
 
 @app.route('/view/<proto>/<int:port>', methods=['GET'] )
 def view( proto, port ):
