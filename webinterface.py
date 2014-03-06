@@ -27,6 +27,10 @@ def index():
 	retval += "</ul>"
 	return flask.render_template( "index.html", content=retval )
 
+@app.route( '/about' )
+def about():
+	return flask.render_template( "about.html" )
+
 @app.route('/view/<proto>/<int:port>', methods=['GET'] )
 def view( proto, port ):
 	notes = ""

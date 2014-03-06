@@ -7,3 +7,14 @@ div#content
 	background-color: white; 
 	padding: 30px; 
 	}
+div#navbar
+	{ 
+	background-color: darkblue; 
+	padding: 5px ; 
+	}
+div#navbar a { color: white; }
+#navbar li { 
+	display: inline; 
+	list-style: none; 
+	margin-right: 20px;
+	}
