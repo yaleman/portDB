@@ -33,15 +33,17 @@ def about():
 
 @app.route('/view/<proto>/<int:port>', methods=['GET'] )
 def view( proto, port ):
-	notes = ""
+	return flask.render_template( "view.html", proto=proto, port=port, notes=getnotes( proto, port ) )
 
+
+def getnotes( proto, port ):
+	notes = ""
+	filename_notes = "data/{}/{}/notes".format( proto, port )
 	if( os.path.exists( filename_notes ) ):
 		notes = open( filename_notes, 'r' ).read().decode("utf-8").replace( "\n", "<br />" )
 	else:
-		notes = "{} doesn't exist".format( filename_notes )		
-	return flask.render_template( "view.html", proto=proto, port=port, notes=notes )
-
-
+		notes = "{} doesn't exist".format( filename_notes )	
+	return notes
 if __name__ == '__main__':
 	app.run( debug=True )
 
