@@ -1,0 +1,17 @@
+{% extends "basetemplate.html" %}
+
+{% block title %}- {{proto}}{% endblock %}
+
+{% block heading %} - {{proto}}{% endblock %}
+
+
+{% block content %}
+
+<ul>
+	{% for port in ports %}
+	<li><a href='/view/{{ proto }}/{{port }}'>{{ port }}</a></li>
+	{% endfor %}
+</ul>
+
+{% endblock %}
+
