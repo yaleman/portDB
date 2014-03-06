@@ -221,16 +221,7 @@ App.initialize(function() {
             id: 'detector',
             name: 'Detector',
             path: App.appPath('detector.js')
-        }, {
-            id: 'ecmascript5',
-            name: 'Ecmascript5 shiv',
-            path: App.shimPath('ecmascript5.js')
-        }, {
-            id: 'console',
-            name: 'Console shiv',
-            dependencies: 'ecmascript5',
-            path: (typeof window.console === "undefined") ? App.shimPath('console.js') : null
-        }, {
+        },  {
             id: 'definitions',
             name: 'Site definitions',
             path: App.modulePath('definitions.js')

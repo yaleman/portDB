@@ -3,9 +3,14 @@ App.define([{
         name: 'jQuery',
         path: App.jqueryPath('jquery-2.0.3.min.js')
     }, {
+        id: 'easing',
+        name: 'Easing',
+        dependencies: 'jquery',
+        path: App.jqueryPath('jquery.easing.js')
+    }, {
         id: 'cascade',
         name: 'Cascade',
-        dependencies: ['jquery', 'easing'],
+        dependencies: 'jquery',
         path: App.jqueryPath('cascade/core.js')
     }, {
         id: 'parsley',
