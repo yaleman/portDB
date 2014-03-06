@@ -1,8 +1,8 @@
 <!doctype html>
 <head>
 <title>PortDB{% block title %}{% endblock %}</title>
-<link rel='stylesheet' href='/static/styles.css' />
-<link rel="apple-touch-icon" href="/static/apple-touch-icon.png" />
+<link rel='stylesheet' href='{{ url_for( 'static', filename='styles.css' ) }}' />
+<link rel="apple-touch-icon" href="{{ url_for( 'static', filename='apple-touch-icon.png' ) }}" />
 </head>
 <body >
 <h1><a href='/'>PortDB</a>{% block heading %}{% endblock %}</h1>
