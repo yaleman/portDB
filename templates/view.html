@@ -8,6 +8,10 @@
 {% block content %}
 <h2>Notes</h2>
 {{ notes|safe }}<br />
+{% if iana %}
+<h2>IANA Data</h2>
+{{ iana|safe }}
+{% endif %}
 {% endblock %}
 
 

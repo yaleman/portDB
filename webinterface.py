@@ -1,6 +1,3 @@
-#!/usr/bin/python
-
-
 import flask
 import markdown
 import os
@@ -34,7 +31,12 @@ def viewproto( proto ):
 
 @app.route('/view/<proto>/<int:port>', methods=['GET'] )
 def view( proto, port ):
-	return flask.render_template( "view.html", proto=proto.upper(), port=port, notes=getnotes( proto, port ) )
+	ianafile = 'data/{}/{}/iana.md'.format( proto, port )
+	if os.path.exists( ianafile ):
+		iana = markdown.markdown( open( ianafile, 'r' ).read() )
+	else:
+		iana = False
+	return flask.render_template( "view.html", proto=proto.upper(), port=port, notes=getnotes( proto, port ), iana=iana )
 
 
 def getnotes( proto, port ):

@@ -1,0 +1,2 @@
+*Name:* smakynet
+*Description:* SMAKYNET
