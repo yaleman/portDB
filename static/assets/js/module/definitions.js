@@ -32,11 +32,4 @@ App.define([{
         name: 'Parsley',
         dependencies: 'jquery',
         path: App.jqueryPath('parsley/parsley.min.js')
-    }, {
-        id: 'analytics',
-        name: 'Google Analytics',
-        path: (document.location.protocol === 'https:' ? '//ssl' : 'http://www') + '.google-analytics.com/ga.js',
-        callback: function() {
-            _gaq.push(['_setAccount', App.trackingcode], ['_trackPageview']);
-        }
-    }]);
+    }, ]);
