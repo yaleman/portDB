@@ -19,6 +19,10 @@ def about():
 	""" return the README.md file in the default template """
 	return flask.render_template( "about.html", readme=markdown.markdown( open( 'README.md', 'r' ).read() ) )
 
+@app.route( '/contributing' )
+def contributing():
+	return flask.render_template( "contributing.html" )
+
 @app.route( '/view/<proto>', methods=['GET'] )
 def viewproto( proto ):
 	""" view a list of ports associated with this protocol """
