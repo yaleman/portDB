@@ -40,13 +40,13 @@ if os.path.exists( "data/" ):
 		service = info[item]
 		servicedir = "data/{}/{}/".format( service['protocol'], service['port'] )
 		if os.path.exists( servicedir ): 
-			md = "*Name:* {}\n".format( service['name'] )
+			md = "_Name:_ {}\n\n".format( service['name'] )
 			if( service['description'] != None ):
-				md += "*Description:* {}\n".format( service['description'] )
+				md += "_Description:_ {}\n\n".format( service['description'] )
 			if service['note'] != None:
-				md += "*Note:* {}\n".format( service['note'] )
+				md += "_Note:_ {}\n\n".format( service['note'] )
 			print servicedir
-			print md
+			#print md
 			fh = open( servicedir + "/iana.md", 'w' )
 			fh.write( md )
 			fh.close()
