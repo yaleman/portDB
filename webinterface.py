@@ -14,9 +14,8 @@ app = flask.Flask(__name__)
 @app.route( '/' )
 def index():
 	""" the site homepage, lists protocols """
-	protocols = [ proto.upper() for proto in os.listdir( "data/" ) ] 
-	protocols.sort()
-	return flask.render_template( "index.html", protocols=protocols )
+	
+	return flask.render_template( "index.html" )
 
 @app.route( '/about' )
 def about():

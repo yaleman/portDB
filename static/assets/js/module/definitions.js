@@ -1,7 +1,7 @@
 App.define([{
         id: 'jquery',
         name: 'jQuery',
-        path: Detector.jquerylegacy ? App.jqueryPath('jquery-1.10.2.min.js') : App.jqueryPath('jquery-2.0.3.min.js')
+        path: App.jqueryPath('jquery-2.0.3.min.js')
     }, {
         id: 'easing',
         name: 'Easing',
@@ -32,4 +32,4 @@ App.define([{
         name: 'Parsley',
         dependencies: 'jquery',
         path: App.jqueryPath('parsley/parsley.min.js')
-    }, ]);
+    }]);

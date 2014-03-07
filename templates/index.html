@@ -3,11 +3,38 @@
 {% block heading %}Select a Protocol{% endblock %}
 
 {% block content %}
-<ul>
-	{% for proto in protocols %}
-	<li><a href='/view/{{ proto }}'>{{ proto }}</a></li>
-	{% endfor %}
-</ul>
+<div class="cell panel">
+    <div class="body">
+        <div class="cell">
+            <div class="col">
+                <div class="cell">
+                 
+                    <div class="col width-1of2">
+                        <a href="/view/TCP">TCP</a>  - Transmission Control Protocol
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="cell panel">
+    <div class="body">
+        <div class="cell">
+            <div class="col">
+                <div class="cell">
+                
+                    <div class="col width-fill">
+                        <a href="/view/UDP">UDP</a>  - Transmission Control Protocol
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 {% endblock %}
 
 
