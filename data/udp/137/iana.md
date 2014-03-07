@@ -1,2 +1,4 @@
-*Name:* netbios-ns
-*Description:* NETBIOS Name Service
+_Name:_ netbios-ns
+
+_Description:_ NETBIOS Name Service
+

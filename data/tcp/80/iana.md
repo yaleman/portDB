@@ -1,6 +1,8 @@
-*Name:* www-http
-*Description:* World Wide Web HTTP
-*Note:* This is a duplicate of the "http" service and should not be used for discovery purposes.
+_Name:_ www-http
+
+_Description:_ World Wide Web HTTP
+
+_Note:_ This is a duplicate of the "http" service and should not be used for discovery purposes.
       u=&lt;username&gt; p=&lt;password&gt; path=&lt;path to document&gt;
         (see txtrecords.html#http)
         Known Subtypes: _printer
@@ -21,3 +23,4 @@
         Such types should be advertised as their own logical service type with their
         own DNS-SD service type, for example, XUL (XML User Interface Language)
         transported over HTTP is advertised explicitly as DNS-SD service type "xul-http".
+

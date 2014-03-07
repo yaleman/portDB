@@ -1,2 +1,4 @@
-*Name:* locus-map
-*Description:* Locus PC-Interface Net Map Ser
+_Name:_ locus-map
+
+_Description:_ Locus PC-Interface Net Map Ser
+

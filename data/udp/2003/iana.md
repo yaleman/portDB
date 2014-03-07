@@ -1,2 +1,4 @@
-*Name:* brutus
-*Description:* Brutus Server
+_Name:_ brutus
+
+_Description:_ Brutus Server
+
