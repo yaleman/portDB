@@ -50,7 +50,7 @@ def getnotes( proto, port ):
 		fh = open( filename_notes, 'r' )
 		notes = markdown.markdown( fh.read().decode("utf-8") )
 	else:
-		notes = "{} doesn't exist".format( filename_notes )	
+		notes = False
 	return notes
 if __name__ == '__main__':
 	app.run( debug=True )
