@@ -1,5 +1,3 @@
-Primarily known for "smakynet" whatever that is.
-
 Also seen running:
 
 TriTechServiceCommunicator.exe – Transfers data for a custom application.
