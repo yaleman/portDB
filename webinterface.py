@@ -39,9 +39,10 @@ def view( proto, port ):
 
 def getnotes( proto, port ):
 	notes = ""
-	filename_notes = "data/{}/{}/notes".format( proto, port )
+	filename_notes = "data/{}/{}/notes".format( proto, port ).lower()
 	if( os.path.exists( filename_notes ) ):
-		notes = markdown.markdown( open( filename_notes, 'r' ).read().decode("utf-8") )
+		fh = open( filename_notes, 'r' )
+		notes = markdown.markdown( fh.read().decode("utf-8") )
 	else:
 		notes = "{} doesn't exist".format( filename_notes )	
 	return notes
