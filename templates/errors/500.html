@@ -1,0 +1,12 @@
+{% extends "errors/error.html" %}
+{% block title %}500 Internal Server Error{% endblock %}
+
+{% block heading %}
+{{ super() }} 500 Internal Server Error
+{% endblock %}
+
+{% block body %}
+  
+  <p>Something broke, we hope it was us and not you...
+  <p><a href="{{ url_for('index') }}">go somewhere nice</a>
+{% endblock %}

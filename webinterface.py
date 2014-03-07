@@ -43,6 +43,13 @@ def view( proto, port ):
 	return flask.render_template( "view.html", proto=proto.upper(), port=port, notes=getnotes( proto, port ), iana=iana )
 
 
+@app.errorhandler(404)
+def error404(e):
+    return flask.render_template('errors/404.html'), 404
+@app.errorhandler(500)
+def error500(e):
+    return render_template('errors/500.html'), 500
+
 def getnotes( proto, port ):
 	notes = ""
 	filename_notes = "data/{}/{}/notes".format( proto, port ).lower()

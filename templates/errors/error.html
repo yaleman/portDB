@@ -1,0 +1,55 @@
+<!doctype html>
+<head>
+<title>portDB {% block title %}404 Page Not Found{% endblock %}</title>
+<style type='text/css'>
+body, a, a:visited, h1 {
+	margin: auto;
+	padding: auto;
+	text-align: center;
+	color: white;
+	font-family: sans-serif;
+	font-weight: normal;
+	text-shadow: 2px 2px black;
+
+}
+body {
+	background-image: url( "{{ url_for( 'static', filename='black-damask-pattern.jpg' ) }}");
+background-size: 100%;
+}
+a:hover { 
+	color: lightgrey; 
+	}
+div#contentbg {
+padding-top: 5em;
+padding-bottom: 5em;
+ 	opacity:0.8;
+filter:alpha(opacity=40);
+
+background-color: #666 ;
+    position:absolute;
+    top:30%;
+width: 100%;
+ }
+ div#content a, div#content, div#content h1 { 
+ 	color: white;
+ }
+</style>
+<meta charset="UTF-8">
+<!-- <link rel='stylesheet' href='{{ url_for( 'static', filename='styles.css' ) }}' /> -->
+
+<link rel="apple-touch-icon" href="{{ url_for( 'static', filename='apple-touch-icon.png' ) }}" />
+</head>
+<body>
+<div id='contentbg'>
+	<div id='content'>
+	<h1>{% block heading %}portDB {% endblock %}</h1>
+	{% block body %}
+
+	{% endblock %}
+	</div>
+</div>
+</body>
+
+
+
+
