@@ -33,20 +33,37 @@ for record in find_records.finditer( data ):
 
 			info[ "{}/{}".format( p,num )] = { 'name' : name, 'protocol' : p, 'description' : d, 'note' : no, 'port' : num }
 
+updated = 0
+noupdate = 0
+ignored = 0
 
 if os.path.exists( "data/" ):
-	print "Data directory exists."
+	print "Data directory exists, starting to process."
 	for item in info:
 		service = info[item]
 		servicedir = "data/{}/{}/".format( service['protocol'], service['port'] )
 		if os.path.exists( servicedir ): 
+			ianafile = servicedir + "/iana.md"
 			md = "_Name:_ {}\n\n".format( service['name'] )
 			if( service['description'] != None ):
 				md += "_Description:_ {}\n\n".format( service['description'] )
 			if service['note'] != None:
 				md += "_Note:_ {}\n\n".format( service['note'] )
-			print servicedir
-			#print md
-			fh = open( servicedir + "/iana.md", 'w' )
-			fh.write( md )
-			fh.close()
+			#print servicedir
+
+			if os.path.exists( ianafile ):
+				with open( ianafile, 'r' ) as fh:
+					if fh.read() == md:
+						noupdate += 1
+					else:
+						with open( ianafile, 'w' ) as fh:
+							fh.write( md )
+						updated += 1
+			else:
+				with open( ianafile, 'w' ) as fh:
+					fh.write( md )
+				updated += 1
+		else:
+			ignored += 1
+print "Updated: {}/{}".format( updated, ( updated + noupdate ) )
+print "Ignored: {}".format( ignored )
