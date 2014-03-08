@@ -45,17 +45,17 @@ def view( proto, port ):
 
 @app.errorhandler(404)
 def error404(e):
-    return flask.render_template('errors/404.html'), 404
+    return flask.render_template( 'errors/404.html' ), 404
 @app.errorhandler(500)
 def error500(e):
-    return render_template('errors/500.html'), 500
+    return render_template( 'errors/500.html' ), 500
 
 def getnotes( proto, port ):
 	notes = ""
 	filename_notes = "data/{}/{}/notes".format( proto, port ).lower()
 	if( os.path.exists( filename_notes ) ):
-		fh = open( filename_notes, 'r' )
-		notes = markdown.markdown( fh.read().decode("utf-8") )
+		with open( filename_notes, 'r' ) as fh: 
+			notes = markdown.markdown( fh.read().decode( 'utf-8' ) )
 	else:
 		notes = False
 	return notes
