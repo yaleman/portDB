@@ -27,7 +27,7 @@ def contributing():
 def viewproto( proto ):
 	""" view a list of ports associated with this protocol """
 	if( os.path.exists ( "data/{}".format( proto.lower() ) ) ):
-		ports = os.listdir( "data/{}".format( proto.lower() ) )
+		ports = [ port for port in os.listdir( "data/{}".format( proto.lower() ) ) if port != '.DS_Store' ]
 		ports.sort( key=int)
 		return flask.render_template( "viewproto.html", proto=proto.upper(), ports=ports )
 	else:
