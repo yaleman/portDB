@@ -36,7 +36,7 @@ for record in find_records.finditer( data ):
 updated = 0
 noupdate = 0
 ignored = 0
-
+services = {}
 if os.path.exists( "data/" ):
 	print "Data directory exists, starting to process."
 	for item in info:
@@ -49,8 +49,12 @@ if os.path.exists( "data/" ):
 				md += "_Description:_ {}\n\n".format( service['description'] )
 			if service['note'] != None:
 				md += "_Note:_ {}\n\n".format( service['note'] )
-			#print servicedir
-
+			if servicedir != services:
+				services[servicedir] = md
+			else:
+				print "Duplicate service: {}".format( servicedir )
+				print "Original:\n{}".format( services[servicedir] )
+				print "New:\n{}".format( md )
 			if os.path.exists( ianafile ):
 				with open( ianafile, 'r' ) as fh:
 					if fh.read() == md:
