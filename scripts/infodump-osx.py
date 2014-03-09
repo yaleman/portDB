@@ -3,6 +3,7 @@
 import subprocess
 import re
 import os
+import sys
 import pickle
 
 if os.path.exists( 'infodump-osx.pickle' ):
@@ -19,6 +20,14 @@ re_lsof = re.compile( "^(?P<process>[^\s]+)[\s]+[\d]+[\s]+[^\s]+[\s]+[^\s]+[\s]+
 re_ipv4connect = re.compile( "")
 text = subprocess.check_output( command )
 
+re_ipstring = "(?P<ip>[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3}\.[\d]{1,3})"
+re_ips = re.compile( "inet {}".format( re_ipstring ) )
+re_server = re.compile( "({}|\*):(?P<port>[\d]+)".format( re_ipstring ) )
+ifconfig = subprocess.check_output( "/sbin/ifconfig" )
+ips = re_ips.findall( ifconfig )
+
+
+
 for line in [ line for line in text.split( "\n" )[1:] if line.strip() != "" ]:
 	data = re_lsof.match( line )
 	if data != None:
@@ -32,16 +41,21 @@ for line in [ line for line in text.split( "\n" )[1:] if line.strip() != "" ]:
 					port = data.group( 'ipstring' ).split( ":" )[-1]
 					server = ( protocol, port, process, ipversion )
 					if server not in infodump['servers']:
-						servers.append(  server )
+						infodump['servers'].append(  server )
 						print "New client found: {}".format( server )
 				else:
-					if ipstring.startswith( "*:" ):
+					if re_server.match( ipstring ) != None:
+						print ipstring
 						client = ( process, protocol, ipstring[2:], ipversion )
 						if client not in infodump['clients']:
-							clients.append( client )
+							infodump['clients'].append( client )
 							print "New client found: {}".format( client )
-print "Servers: {}".format( infodump['servers'] )
-print "Clients: {}".format( infodump['clients'] )
+					else:
+						#print ipstring
+						src, dest = ipstring.split( r'->' )
+						#rint src, dest
+#print "Servers: {}".format( infodump['servers'] )
+#print "Clients: {}".format( infodump['clients'] )
 
 
 
