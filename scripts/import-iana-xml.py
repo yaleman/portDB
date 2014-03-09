@@ -84,7 +84,7 @@ if os.path.exists( "data/" ):
 				updated += 1
 		else:
 			ignored += 1
-			if service['protocol'] in ( 'tcp', 'udp' ):
+			if service['protocol'] in ( 'tcp', 'udp' ) and "-" not in service['port']:
 				ignored_services.append( { 'protocol' : service['protocol'], 'port' : service['port'], 'name': service['name'], 
 						'description' : service['description'], 'note' : service['note'] } )
 print "Updated: {}/{}".format( updated, ( updated + noupdate ) )
@@ -97,3 +97,4 @@ if updated == 0 and len( ignored_services ) > 0:
 		if not os.path.exists( mkservicedir( service ) ):
 				os.makedirs( mkservicedir( service ) )
 		writefile( ianafilename( service ), buildmd( service ) )
+		print "Added {}".format( mkservicedir( service ) ) 
