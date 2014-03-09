@@ -7,11 +7,49 @@
 
 {% block content %}
 
-<ul>
-	{% for port in ports %}
-	<li><a href='/view/{{ proto }}/{{port }}'>{{ port }}</a></li>
+{% macro pagination() %}
+	{% for page in pagination.iter_pages() %}
+		{% if page %}
+			{% if page != pagination.page %} 
+				<a href='{{ url_for_other_page( page )}}'>{{ page }}</a>
+			{% else %}
+				<strong>{{ page }}</strong>
+			{% endif %}
+		{% else %}
+			<span class='ellipsis'>...</span>
+		{% endif %}	
 	{% endfor %}
-</ul>
 
+	{% if pagination.has_next %}
+		<a href='{{ url_for_other_page( pagination.page + 1 ) }}'>Next &raquo;</a>
+	{% endif %}
+{% endmacro %}
+
+{{ pagination() }}	
+<br />
+Displaying ports {{ ports[0] }}-{{ ports[-1] }} ({{ numports }} to a page)<br />
+
+<div id='portlist'>
+{% for port in ports %}
+	<div class='portbox'><a href='/view/{{ proto }}/{{ port }}'>{{ port }}</a></div>
+{% endfor %}
+</div>
+<br />
+
+{{ pagination() }}	
+<style type='text/css'>
+
+div.portbox {	
+
+	position: relative; 
+	height: 1.2em;
+	width: 3.0em;
+	padding: 0; 
+	float:left; 
+	margin: 0.01em; 
+	border: 1px solid #EEE;
+	overflow: hidden;
+	}
+</style>
 {% endblock %}
 
