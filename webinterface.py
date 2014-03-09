@@ -48,7 +48,10 @@ class Pagination(object):
 @app.route( '/' )
 def index():
 	""" the site homepage, lists protocols """
-	return render_template( "index.html" )
+	protocols = { 'tcp' : "Transmission Control Protocol", 
+				'udp' : "User Datagram Protocol" 
+				}
+	return render_template( "index.html", protocols=protocols )
 
 @app.route( '/about' )
 def about():

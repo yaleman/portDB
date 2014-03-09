@@ -3,34 +3,23 @@
 {% block heading %}Select a Protocol{% endblock %}
 
 {% block content %}
+
+{% for protocol in protocols %}
 <div class="cell panel">
     <div class="body">
         <div class="cell">
             <div class="col">
                 <div class="cell">
-                 
-                    <div class="col width-1of2">
-                        <a href="/view/TCP">TCP</a>  - Transmission Control Protocol
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="cell panel">
-    <div class="body">
-        <div class="cell">
-            <div class="col">
-                <div class="cell">
-                
                     <div class="col width-fill">
-                        <a href="/view/UDP">UDP</a>  - User Datagram Protocol
+                        <a href="/view/{{ protocol.upper() }}">{{ protocol.upper() }}</a>  - {{ protocols[ protocol ] }}
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% endfor %}
+
 
 
 
