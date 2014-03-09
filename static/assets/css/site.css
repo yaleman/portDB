@@ -100,7 +100,17 @@ body
 font-size: 1.5em;
 
 }
+div.portbox {   
 
+    position: relative; 
+    height: 1.2em;
+    width: 3.0em;
+    padding: 0; 
+    float:left; 
+    margin: 0.01em; 
+    border: 1px solid #EEE;
+    overflow: hidden;
+    }
 
 
 .logo {

@@ -7,7 +7,11 @@
 
 {% block content %}
 
-{% macro pagination() %}
+{% macro display_pagination() %}
+	{% if pagination.has_prev %}
+		<a href='{{ url_for_other_page( pagination.page - 1 ) }}'>&laquo; Prev</a> 
+
+	{% endif %}
 	{% for page in pagination.iter_pages() %}
 		{% if page %}
 			{% if page != pagination.page %} 
@@ -25,7 +29,7 @@
 	{% endif %}
 {% endmacro %}
 
-{{ pagination() }}	
+{{ display_pagination() }}	
 <br />
 Displaying ports {{ ports[0] }}-{{ ports[-1] }} ({{ numports }} to a page)<br />
 
@@ -36,20 +40,7 @@ Displaying ports {{ ports[0] }}-{{ ports[-1] }} ({{ numports }} to a page)<br />
 </div>
 <br />
 
-{{ pagination() }}	
-<style type='text/css'>
+{{ display_pagination() }}	
 
-div.portbox {	
-
-	position: relative; 
-	height: 1.2em;
-	width: 3.0em;
-	padding: 0; 
-	float:left; 
-	margin: 0.01em; 
-	border: 1px solid #EEE;
-	overflow: hidden;
-	}
-</style>
 {% endblock %}
 
