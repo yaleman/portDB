@@ -1,0 +1,22 @@
+footer div{
+    border-top: 1px solid darkblue;
+}
+footer div ul {
+    text-decoration: none;
+    display: inline;
+}
+div.bodybox{ 
+	padding: 0 2.0em ;
+	}
+
+div.portbox {   
+
+    position: relative; 
+    height: 1.2em;
+    width: 3.2em;
+    padding: 0; 
+    float:left; 
+    margin: 0.2em; 
+    overflow: hidden;
+    }
+.portlist { clear:right;}

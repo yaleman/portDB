@@ -2,14 +2,14 @@
 
 {% block title %} - {{proto}}/{{port}}{% endblock %}
 
-{% block heading %}portDB - <a href='/view/{{proto}}'>{{proto}}</a>/{{port}}{% endblock %}
+{% block heading %}<a href='/view/{{proto}}'>{{proto.upper()}}</a>/{{port}}{% endblock %}
 
 
 {% block content %}
 
 	{% if notes %}
 		<h2>Notes</h2>
-		{{ notes|safe }}<br />
+		{{ notes|safe }}
 	{% endif %}
 
 	{% if iana %}

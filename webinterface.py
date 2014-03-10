@@ -82,7 +82,7 @@ def viewproto( proto, page ):
 			numports = len( ports )
 			
 		return render_template( "viewproto.html", pagination=Pagination( page, per_page, num_ports ), 
-				proto=proto.upper(), ports=ports, numports=numports, startpoint=startpoint )
+				proto=proto, ports=ports, numports=numports, startpoint=startpoint )
 	else:
 		return index()
 
@@ -95,7 +95,7 @@ def view( proto, port ):
 		iana = markdown.markdown( open( ianafile, 'r' ).read() )
 	else:
 		iana = False
-	return render_template( "view.html", proto=proto.upper(), port=port, notes=getnotes( proto, port ), iana=iana )
+	return render_template( "view.html", proto=proto, port=port, notes=getnotes( proto, port ), iana=iana )
 
 
 @app.errorhandler(404)

@@ -2,41 +2,44 @@
 
 {% block title %} - {{proto}}{% endblock %}
 
-{% block heading %}Select a port - {{proto}}{% endblock %}
+{% block heading %}Select a port - {{proto.upper()}}{% endblock %}
 
 
 {% block content %}
 
 {% macro display_pagination() %}
+<ul class='pagination'>
 	{% if pagination.has_prev %}
-		<a href='{{ url_for_other_page( pagination.page - 1 ) }}'>&laquo; Prev</a> 
-
+		<li><a href='{{ url_for_other_page( pagination.page - 1 ) }}'>&laquo;</a></li>
 	{% endif %}
 	{% for page in pagination.iter_pages() %}
 		{% if page %}
 			{% if page != pagination.page %} 
-				<a href='{{ url_for_other_page( page )}}'>{{ page }}</a>
+				<li><a href='{{ url_for_other_page( page )}}'>{{ page }}</a></li>
 			{% else %}
-				<strong>{{ page }}</strong>
+				<li class='active'><a href='#'>{{ page }}</a></li>
 			{% endif %}
 		{% else %}
-			<span class='ellipsis'>...</span>
+			<li class='disabled'><a href='#'>...</a></li>
 		{% endif %}	
 	{% endfor %}
 
 	{% if pagination.has_next %}
-		<a href='{{ url_for_other_page( pagination.page + 1 ) }}'>Next &raquo;</a>
+		<li><a href='{{ url_for_other_page( pagination.page + 1 ) }}'>&raquo;</a></li>
 	{% endif %}
+	</ul>
 {% endmacro %}
 
 {{ display_pagination() }}	
 <br />
+<div class='container-fluid'>
 Displaying ports {{ ports[0] }}-{{ ports[-1] }} ({{ numports }} to a page)<br />
 
 <div id='portlist'>
 {% for port in ports %}
 	<div class='portbox'><a href='/view/{{ proto }}/{{ port }}'>{{ port }}</a></div>
 {% endfor %}
+</div>
 </div>
 <br />
 
