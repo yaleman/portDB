@@ -35,7 +35,7 @@ def datadir( proto, port=None ):
 app = Flask(__name__)
 app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 
-
+protocols = [ p.lower() for p in os.listdir( 'data/' ) if p != '.DS_Store' ]
 
 
 @app.route( '/' )
@@ -59,42 +59,49 @@ def contributing():
 @app.route('/view/<proto>/page/<int:page>')
 def viewproto( proto, page ):
 	""" view a list of ports associated with this protocol """
-	from pagination import Pagination
+	if avoidnasty( proto ):
+		from pagination import Pagination
 
-	if os.path.exists( datadir( proto ) ):
-		ports = [ port for port in os.listdir( datadir( proto ) ) if port != '.DS_Store' ]
-		# count the ports for pagination's sake
-		num_ports = len( ports )
-		per_page = 500
+		if os.path.exists( datadir( proto ) ):
+			ports = [ port for port in os.listdir( datadir( proto ) ) if port != '.DS_Store' ]
+			# count the ports for pagination's sake
+			num_ports = len( ports )
+			per_page = 500
 
-		if not ports and page != 1:
-		# if the list of ports is broken and someone's going to the wrong page, 404 them
-			abort( 404 )
-		else:
-			# sort them numerically instead of alphabetically.
-			ports.sort( key=int )
-			if page == 1:
-				startpoint = 0
+			if not ports and page != 1:
+			# if the list of ports is broken and someone's going to the wrong page, 404 them
+				abort( 404 )
 			else:
-				startpoint = ( page -1 ) * per_page
-			ports = ports[ startpoint : ( startpoint + per_page ) ]
-			numports = len( ports )
+				# sort them numerically instead of alphabetically.
+				ports.sort( key=int )
+				if page == 1:
+					startpoint = 0
+				else:
+					startpoint = ( page -1 ) * per_page
+				ports = ports[ startpoint : ( startpoint + per_page ) ]
+				numports = len( ports )
 
-		return render_template( "viewproto.html", pagination=Pagination( page, per_page, num_ports ), 
-				proto=proto, ports=ports, numports=numports, startpoint=startpoint )
-	else:
-		return index()
-
-
+			return render_template( "viewproto.html", pagination=Pagination( page, per_page, num_ports ), 
+					proto=proto, ports=ports, numports=numports, startpoint=startpoint )
+		else:
+			return index()
+def avoidnasty( proto, port=None ):
+	# check against the stored protocols. fairly simple way of avoiding nastiness
+	if proto.lower() not in protocols:
+		abort( 403 )
+		return False
+	return True
 
 @app.route('/view/<proto>/<int:port>', methods=['GET'] )
 def view( proto, port ):
-	ianafile = '{}iana.md'.format( datadir( proto, port ) ) 
-	if os.path.exists( ianafile ):
-		iana = markdown.markdown( open( ianafile, 'r' ).read() )
-	else:
-		iana = False
-	return render_template( "view.html", proto=proto, port=port, notes=getnotes( proto, port ), iana=iana )
+	proto = proto.lower()
+	if avoidnasty( proto, port ):
+		ianafile = '{}iana.md'.format( datadir( proto, port ) ) 
+		if os.path.exists( ianafile ):
+			iana = markdown.markdown( open( ianafile, 'r' ).read() )
+		else:
+			iana = False
+		return render_template( "view.html", proto=proto, port=port, notes=getnotes( proto, port ), iana=iana )
 
 
 @app.errorhandler(404)
