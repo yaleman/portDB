@@ -4,14 +4,39 @@ import markdown
 import os.path
 from math import ceil
 
-app = Flask(__name__)
+
 
 
 def url_for_other_page(page):
     args = request.view_args.copy()
     args['page'] = page
     return url_for(request.endpoint, **args)
+
+
+def getnotes( proto, port ):
+	notes = ""
+	filename_notes = "{}notes".format( datadir( proto, port ) )
+	if( os.path.exists( filename_notes ) ):
+		with open( filename_notes, 'r' ) as fh: 
+			notes = markdown.markdown( fh.read().decode( 'utf-8' ) )
+	else:
+		notes = False
+	return notes
+	
+def datadir( proto, port=None ):
+	""" returns the appropriate data directory based on the protocol/port supplied """
+	# TODO: include checking for if the directory actually exists.
+	if "." in proto :
+		abort( 403 )
+	if port is None:
+		return 'data/{}/'.format( proto.lower() )
+	else:
+		return  "data/{}/{}/".format( proto.lower(), port )
+
+app = Flask(__name__)
 app.jinja_env.globals['url_for_other_page'] = url_for_other_page
+
+
 
 
 @app.route( '/' )
@@ -35,10 +60,10 @@ def contributing():
 @app.route('/view/<proto>/page/<int:page>')
 def viewproto( proto, page ):
 	""" view a list of ports associated with this protocol """
-	if( os.path.exists ( "data/{}".format( proto.lower() ) ) ):
-		ports = [ port for port in os.listdir( "data/{}".format( proto.lower() ) ) if port != '.DS_Store' ]
 	from pagination import Pagination
 	
+	if os.path.exists( datadir( proto ) ):
+		ports = [ port for port in os.listdir( datadir( proto ) ) if port != '.DS_Store' ]
 		# if the list of ports is broken and someone's going to the wrong page, 404 them
 		# count the ports for pagination's sake
 		num_ports = len( ports )
@@ -60,9 +85,11 @@ def viewproto( proto, page ):
 	else:
 		return index()
 
+
+
 @app.route('/view/<proto>/<int:port>', methods=['GET'] )
 def view( proto, port ):
-	ianafile = 'data/{}/{}/iana.md'.format( proto, port )
+	ianafile = '{}iana.md'.format( datadir( proto, port ) ) 
 	if os.path.exists( ianafile ):
 		iana = markdown.markdown( open( ianafile, 'r' ).read() )
 	else:
@@ -77,15 +104,9 @@ def error404(e):
 def error500(e):
     return render_template( 'errors/500.html' ), 500
 
-def getnotes( proto, port ):
-	notes = ""
-	filename_notes = "data/{}/{}/notes".format( proto, port ).lower()
-	if( os.path.exists( filename_notes ) ):
-		with open( filename_notes, 'r' ) as fh: 
-			notes = markdown.markdown( fh.read().decode( 'utf-8' ) )
-	else:
-		notes = False
-	return notes
+
+
+
 if __name__ == '__main__':
 	app.run( debug=True )
 
