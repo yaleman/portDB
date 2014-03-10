@@ -61,15 +61,15 @@ def contributing():
 def viewproto( proto, page ):
 	""" view a list of ports associated with this protocol """
 	from pagination import Pagination
-	
+
 	if os.path.exists( datadir( proto ) ):
 		ports = [ port for port in os.listdir( datadir( proto ) ) if port != '.DS_Store' ]
-		# if the list of ports is broken and someone's going to the wrong page, 404 them
 		# count the ports for pagination's sake
 		num_ports = len( ports )
 		per_page = 500
 
 		if not ports and page != 1:
+		# if the list of ports is broken and someone's going to the wrong page, 404 them
 			abort( 404 )
 		else:
 			# sort them numerically instead of alphabetically.
@@ -80,6 +80,7 @@ def viewproto( proto, page ):
 				startpoint = ( page -1 ) * per_page
 			ports = ports[ startpoint : ( startpoint + per_page ) ]
 			numports = len( ports )
+			
 		return render_template( "viewproto.html", pagination=Pagination( page, per_page, num_ports ), 
 				proto=proto.upper(), ports=ports, numports=numports, startpoint=startpoint )
 	else:
