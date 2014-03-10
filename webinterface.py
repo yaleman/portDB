@@ -15,13 +15,12 @@ def url_for_other_page(page):
 
 def getnotes( proto, port ):
 	notes = ""
-	filename_notes = "{}notes".format( datadir( proto, port ) )
+	filename_notes = "{}notes.md".format( datadir( proto, port ) )
 	if( os.path.exists( filename_notes ) ):
 		with open( filename_notes, 'r' ) as fh: 
-			notes = markdown.markdown( fh.read().decode( 'utf-8' ) )
+			return  markdown.markdown( fh.read().decode( 'utf-8' ) )
 	else:
-		notes = False
-	return notes
+		return False
 	
 def datadir( proto, port=None ):
 	""" returns the appropriate data directory based on the protocol/port supplied """
@@ -80,7 +79,7 @@ def viewproto( proto, page ):
 				startpoint = ( page -1 ) * per_page
 			ports = ports[ startpoint : ( startpoint + per_page ) ]
 			numports = len( ports )
-			
+
 		return render_template( "viewproto.html", pagination=Pagination( page, per_page, num_ports ), 
 				proto=proto, ports=ports, numports=numports, startpoint=startpoint )
 	else:
