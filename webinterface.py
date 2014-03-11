@@ -37,6 +37,12 @@ app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 
 protocols = [ p.lower() for p in os.listdir( 'data/' ) if p != '.DS_Store' ]
 
+def portlist( proto ):
+	""" returns a list of ports (as strings) based on a proto """
+	if avoidnasty( proto ):
+		ports = os.listdir( datadir( proto ) )
+		return ports
+
 def avoidnasty( proto, port=None ):
 	# check against the stored protocols. fairly simple way of avoiding nastiness
 	if proto.lower() not in protocols:
