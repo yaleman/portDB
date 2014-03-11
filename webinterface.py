@@ -37,6 +37,12 @@ app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 
 protocols = [ p.lower() for p in os.listdir( 'data/' ) if p != '.DS_Store' ]
 
+def avoidnasty( proto, port=None ):
+	# check against the stored protocols. fairly simple way of avoiding nastiness
+	if proto.lower() not in protocols:
+		abort( 403 )
+		return False
+	return True
 
 @app.route( '/' )
 def index():
@@ -85,12 +91,6 @@ def viewproto( proto, page ):
 					proto=proto, ports=ports, numports=numports, startpoint=startpoint )
 		else:
 			return index()
-def avoidnasty( proto, port=None ):
-	# check against the stored protocols. fairly simple way of avoiding nastiness
-	if proto.lower() not in protocols:
-		abort( 403 )
-		return False
-	return True
 
 @app.route('/view/<proto>/<int:port>', methods=['GET'] )
 def view( proto, port ):
