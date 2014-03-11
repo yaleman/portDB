@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, jsonify
+
 
 import markdown
 import os.path
 from math import ceil
 
-
+import json
 
 
 def url_for_other_page(page):
@@ -39,8 +40,10 @@ protocols = [ p.lower() for p in os.listdir( 'data/' ) if p != '.DS_Store' ]
 
 def portlist( proto ):
 	""" returns a list of ports (as strings) based on a proto """
+	# TODO: write tests for this, it should be doable.
 	if avoidnasty( proto ):
-		ports = os.listdir( datadir( proto ) )
+		proto = proto.lower()
+		ports = [ port for port in os.listdir( datadir( proto ) ) if port != '.DS_Store' ]
 		return ports
 
 def avoidnasty( proto, port=None ):
@@ -109,6 +112,30 @@ def view( proto, port ):
 			iana = False
 		return render_template( "view.html", proto=proto, port=port, notes=getnotes( proto, port ), iana=iana )
 
+def searchports( proto, searchterm ):
+	""" supply the proto and the searchterm and it'll respond with the list of ports and if there's more than 5 """
+	# TODO : write tests for this, it should be doable.
+	maxresponses = 100
+
+	ports = [ port for port in portlist( proto ) if port.startswith( searchterm ) ]
+	ports.sort( key=int )
+	ismore = False
+	if len( ports ) > maxresponses:
+		ismore = True
+		ports = ports[:maxresponses]
+	return ports, ismore
+
+
+
+@app.route( '/api/<proto>/<port>/search.json', methods=[ 'GET' ] )
+@app.route( '/api/<proto>/proto.json', defaults={ 'port': "" }, methods=[ 'GET' ] )
+def api( proto, port ):
+	""" returns a json object which should allow searches for things."""
+	ports, ismore = searchports( proto, port )
+	
+	data = [ {'p' : '{}/{}'.format( proto, port ) } for port in ports ]
+	return json.dumps( data )
+	
 
 @app.errorhandler(404)
 def error404(e):
@@ -117,7 +144,15 @@ def error404(e):
 def error500(e):
     return render_template( 'errors/500.html' ), 500
 
-
+@app.after_request
+def add_header(response):
+    """
+    Add headers to both force latest IE rendering engine or Chrome Frame,
+    and also to cache the rendered page for 10 minutes.
+    """
+    response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
+    response.headers['Cache-Control'] = ' no-cache, no-store'
+    return response
 
 
 if __name__ == '__main__':
