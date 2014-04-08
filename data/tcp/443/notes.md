@@ -1,6 +1,6 @@
-SSL-encrypted HTTP. Normally for client applications transferring web pages, but can carry API data and so forth.
+SSL-encrypted HTTP. Normally for client applications transferring web pages, but can carry API data.
 
-## Seen running
+### Processes seen running on this port
 
 - vmware-converter.exe
 
