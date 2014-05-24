@@ -1,0 +1,1 @@
+SMB2 - Server Messaging Block2 - Used by Windows in recent (as of 2014) versions.
