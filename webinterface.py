@@ -18,11 +18,11 @@ def getnotes( proto, port ):
 	notes = ""
 	filename_notes = "{}notes.md".format( datadir( proto, port ) )
 	if( os.path.exists( filename_notes ) ):
-		with open( filename_notes, 'r' ) as fh: 
+		with open( filename_notes, 'r' ) as fh:
 			return  markdown.markdown( fh.read().decode( 'utf-8' ) )
 	else:
 		return False
-	
+
 def datadir( proto, port=None ):
 	""" returns the appropriate data directory based on the protocol/port supplied """
 	# TODO: include checking for if the directory actually exists.
@@ -33,10 +33,15 @@ def datadir( proto, port=None ):
 	else:
 		return  "data/{}/{}/".format( proto.lower(), port )
 
+# initialize the web app
 app = Flask(__name__)
 app.jinja_env.globals['url_for_other_page'] = url_for_other_page
 
-protocols = [ p.lower() for p in os.listdir( 'data/' ) if p != '.DS_Store' ]
+# going to hard code the protocols
+#protocols = [ p.lower() for p in os.listdir( 'data/' ) if p != '.DS_Store' ]
+protocols = { 'tcp' : "Transmission Control Protocol",
+      'udp' : "User Datagram Protocol"
+      }
 
 def portlist( proto ):
 	""" returns a list of ports (as strings) based on a proto """
@@ -56,9 +61,6 @@ def avoidnasty( proto, port=None ):
 @app.route( '/' )
 def index():
 	""" the site homepage, lists protocols """
-	protocols = { 'tcp' : "Transmission Control Protocol", 
-				'udp' : "User Datagram Protocol" 
-				}
 	return render_template( "index.html", protocols=protocols )
 
 @app.route( '/about' )
@@ -96,7 +98,7 @@ def viewproto( proto, page ):
 				ports = ports[ startpoint : ( startpoint + per_page ) ]
 				numports = len( ports )
 
-			return render_template( "viewproto.html", pagination=Pagination( page, per_page, num_ports ), 
+			return render_template( "viewproto.html", pagination=Pagination( page, per_page, num_ports ),
 					proto=proto, ports=ports, numports=numports, startpoint=startpoint )
 		else:
 			return index()
@@ -105,7 +107,7 @@ def viewproto( proto, page ):
 def view( proto, port ):
 	proto = proto.lower()
 	if avoidnasty( proto, port ):
-		ianafile = '{}iana.md'.format( datadir( proto, port ) ) 
+		ianafile = '{}iana.md'.format( datadir( proto, port ) )
 		if os.path.exists( ianafile ):
 			iana = markdown.markdown( open( ianafile, 'r' ).read() )
 		else:
@@ -132,10 +134,10 @@ def searchports( proto, searchterm ):
 def api( proto, port ):
 	""" returns a json object which should allow searches for things."""
 	ports, ismore = searchports( proto, port )
-	
+
 	data = [ {'p' : '{}/{}'.format( proto, port ) } for port in ports ]
 	return json.dumps( data )
-	
+
 
 @app.errorhandler(404)
 def error404(e):
@@ -157,4 +159,3 @@ def add_header(response):
 
 if __name__ == '__main__':
 	app.run( debug=True )
-
