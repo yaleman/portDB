@@ -4,27 +4,22 @@ from flask import Flask, render_template, request, url_for, jsonify
 import markdown
 import os.path
 from math import ceil
-
+from tools import *
 import json
 
 
 def url_for_other_page(page):
+    """ Documentation to come?
+    """
+    #TODO: Document this function
     args = request.view_args.copy()
     args['page'] = page
     return url_for(request.endpoint, **args)
 
-
-def getnotes( proto, port ):
-	notes = ""
-	filename_notes = "{}notes.md".format( datadir( proto, port ) )
-	if( os.path.exists( filename_notes ) ):
-		with open( filename_notes, 'r' ) as fh:
-			return  markdown.markdown( fh.read().decode( 'utf-8' ) )
-	else:
-		return False
-
 def datadir( proto, port=None ):
-	""" returns the appropriate data directory based on the protocol/port supplied """
+	""" String datadir( String proto, Int port )
+  returns the appropriate data directory based on the protocol/port supplied
+  """
 	# TODO: include checking for if the directory actually exists.
 	if "." in proto :
 		abort( 403 )

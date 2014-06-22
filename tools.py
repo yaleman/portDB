@@ -1,3 +1,38 @@
+import os
+
+def getnotes( proto, port ):
+  """ String getnotes( String proto, Int port )
+  returns a markdown-rendered version of a notes file for a given proto/port combination
+  returns False if the file doesn't exist.
+  """
+  notes = ""
+  filename_notes = "{}notes.md".format( datadir( proto, port ) )
+  if( os.path.exists( filename_notes ) ):
+    with open( filename_notes, 'r' ) as fh:
+      return  markdown.markdown( fh.read().decode( 'utf-8' ) )
+  else:
+    return False
+
+def url_for_other_page(page):
+    """ Documentation to come?
+    """
+    #TODO: Document this function
+    args = request.view_args.copy()
+    args['page'] = page
+    return url_for(request.endpoint, **args)
+
+def datadir( proto, port=None ):
+  """ String datadir( String proto, Int port )
+  returns the appropriate data directory based on the protocol/port supplied
+  """
+  # TODO: include checking for if the directory actually exists.
+  if "." in proto :
+    abort( 403 )
+  if port is None:
+    return 'data/{}/'.format( proto.lower() )
+  else:
+    return  "data/{}/{}/".format( proto.lower(), port )
+
 def levenshtein(s1, s2):
     if len(s1) < len(s2):
         return levenshtein(s2, s1)
