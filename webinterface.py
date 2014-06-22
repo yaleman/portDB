@@ -43,7 +43,7 @@ protocols = { 'tcp' : "Transmission Control Protocol",
       'udp' : "User Datagram Protocol"
       }
 
-def portlist( proto ):
+def portlist( proto=None ):
 	""" returns a list of ports (as strings) based on a proto """
 	# TODO: write tests for this, it should be doable.
 	if avoidnasty( proto ):
@@ -117,9 +117,9 @@ def view( proto, port ):
 def searchports( proto, searchterm ):
 	""" supply the proto and the searchterm and it'll respond with the list of ports and if there's more than 5 """
 	# TODO : write tests for this, it should be doable.
-	maxresponses = 100
+	maxresponses = 10
 
-	ports = [ port for port in portlist( proto ) if port.startswith( searchterm ) ]
+	ports = [ port for port in portlist( proto ) if searchterm in port ]
 	ports.sort( key=int )
 	ismore = False
 	if len( ports ) > maxresponses:
@@ -129,14 +129,25 @@ def searchports( proto, searchterm ):
 
 
 
+
+@app.route( '/api/search/<searchterm>/search.json', methods=[ 'GET' ] )
+def apisearch( searchterm ):
+  data = []
+  for proto in protocols:
+    tmp = [ port for port in portlist( proto ) if searchterm in port ]
+    for port in tmp:
+      data.append( { 'proto' : proto, 'port' : port } )
+  return json.dumps( data )
+
 @app.route( '/api/<proto>/<port>/search.json', methods=[ 'GET' ] )
 @app.route( '/api/<proto>/proto.json', defaults={ 'port': "" }, methods=[ 'GET' ] )
 def api( proto, port ):
-	""" returns a json object which should allow searches for things."""
-	ports, ismore = searchports( proto, port )
-
-	data = [ {'p' : '{}/{}'.format( proto, port ) } for port in ports ]
-	return json.dumps( data )
+  """ returns a json object which should allow searches for things."""
+  ports, ismore = searchports( proto, port )
+  data = {}
+  data['ports'] = list( [ ( proto, port ) for port in ports ] )
+  data['ismore'] = ismore
+  return json.dumps( data )
 
 
 @app.errorhandler(404)
