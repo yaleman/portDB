@@ -8,25 +8,7 @@ from tools import *
 import json
 
 
-def url_for_other_page(page):
-    """ Documentation to come?
-    """
-    #TODO: Document this function
-    args = request.view_args.copy()
-    args['page'] = page
-    return url_for(request.endpoint, **args)
 
-def datadir( proto, port=None ):
-	""" String datadir( String proto, Int port )
-  returns the appropriate data directory based on the protocol/port supplied
-  """
-	# TODO: include checking for if the directory actually exists.
-	if "." in proto :
-		abort( 403 )
-	if port is None:
-		return 'data/{}/'.format( proto.lower() )
-	else:
-		return  "data/{}/{}/".format( proto.lower(), port )
 
 # initialize the web app
 app = Flask(__name__)
@@ -47,7 +29,10 @@ def portlist( proto=None ):
 		return ports
 
 def avoidnasty( proto, port=None ):
-	# check against the stored protocols. fairly simple way of avoiding nastiness
+	"""
+  check against the stored protocols. fairly simple way of avoiding nastiness. terribly broken though.
+  """
+  #TODO: add valid-port checking
 	if proto.lower() not in protocols:
 		abort( 403 )
 		return False
@@ -65,6 +50,7 @@ def about():
 
 @app.route( '/contributing' )
 def contributing():
+  """ displays the page where people can find out about helping """
 	return render_template( "contributing.html" )
 
 @app.route('/view/<proto>', defaults={'page': 1})
