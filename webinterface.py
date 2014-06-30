@@ -45,13 +45,13 @@ def index():
 
 @app.route( '/about' )
 def about():
-	""" return the README.md file in the default template """
-	return render_template( "about.html", readme=markdown.markdown( open( 'README.md', 'r' ).read() ) )
+  """ return the README.md file in the default template """
+  return render_template( "about.html", readme=markdown.markdown( open( 'README.md', 'r' ).read() ) )
 
 @app.route( '/contributing' )
 def contributing():
   """ displays the page where people can find out about helping """
-	return render_template( "contributing.html" )
+  return render_template( "contributing.html" )
 
 @app.route('/view/<proto>', defaults={'page': 1})
 @app.route('/view/<proto>/page/<int:page>')
