@@ -13,12 +13,12 @@ import json
 
 
 # initialize the web app
-app = Flask(__name__)
-app.jinja_env.globals['url_for_other_page'] = url_for_other_page
+PORTDB = Flask(__name__)
+PORTDB.jinja_env.globals['url_for_other_page'] = url_for_other_page
 
 # going to hard code the protocols
 #protocols = [ p.lower() for p in os.listdir( 'data/' ) if p != '.DS_Store' ]
-protocols = { 'tcp' : "Transmission Control Protocol",
+PROTOCOLS = { 'tcp' : "Transmission Control Protocol",
       'udp' : "User Datagram Protocol"
       }
 
@@ -35,28 +35,28 @@ def avoidnasty( proto, port=None ):
   check against the stored protocols. fairly simple way of avoiding nastiness. terribly broken though.
   """
   #TODO: add valid-port checking
-	if proto.lower() not in protocols:
+	if proto.lower() not in PROTOCOLS:
 		abort( 403 )
 		return False
 	return True
 
-@app.route( '/' )
+@PORTDB.route( '/' )
 def index():
 	""" the site homepage, lists protocols """
-	return render_template( "index.html", protocols=protocols )
+	return render_template( "index.html", protocols=PROTOCOLS )
 
-@app.route( '/about' )
+@PORTDB.route( '/about' )
 def about():
   """ return the README.md file in the default template """
   return render_template( "about.html", readme=markdown.markdown( open( 'README.md', 'r' ).read() ) )
 
-@app.route( '/contributing' )
+@PORTDB.route( '/contributing' )
 def contributing():
   """ displays the page where people can find out about helping """
   return render_template( "contributing.html" )
 
-@app.route('/view/<proto>', defaults={'page': 1})
-@app.route('/view/<proto>/page/<int:page>')
+@PORTDB.route('/view/<proto>', defaults={'page': 1})
+@PORTDB.route('/view/<proto>/page/<int:page>')
 def viewproto( proto, page ):
 	""" view a list of ports associated with this protocol """
 	if avoidnasty( proto ):
@@ -86,7 +86,7 @@ def viewproto( proto, page ):
 		else:
 			return index()
 
-@app.route('/view/<proto>/<int:port>', methods=['GET'] )
+@PORTDB.route('/view/<proto>/<int:port>', methods=['GET'] )
 def view( proto, port ):
   """" presents the view of a protocol/port combination """
   proto = proto.lower()
@@ -114,18 +114,18 @@ def searchports( proto, searchterm ):
 
 
 
-@app.route( '/api/search/<searchterm>/search.json', methods=[ 'GET' ] )
+@PORTDB.route( '/api/search/<searchterm>/search.json', methods=[ 'GET' ] )
 def apisearch( searchterm ):
   """ this is the start of the API search functionality, still doesn't work """
   data = []
-  for proto in protocols:
+  for proto in PROTOCOLS:
     tmp = [ port for port in portlist( proto ) if searchterm in port ]
     for port in tmp:
       data.append( { 'proto' : proto, 'port' : port } )
   return json.dumps( data )
 
-@app.route( '/api/<proto>/<port>/search.json', methods=[ 'GET' ] )
-@app.route( '/api/<proto>/proto.json', defaults={ 'port': "" }, methods=[ 'GET' ] )
+@PORTDB.route( '/api/<proto>/<port>/search.json', methods=[ 'GET' ] )
+@PORTDB.route( '/api/<proto>/proto.json', defaults={ 'port': "" }, methods=[ 'GET' ] )
 def api( proto, port ):
   """ returns a json object which should allow searches for things."""
   ports, ismore = searchports( proto, port )
@@ -135,15 +135,17 @@ def api( proto, port ):
   return json.dumps( data )
 
 
-@app.errorhandler(404)
-def error404(e):
-    return render_template( 'errors/404.html' ), 404
-@app.errorhandler(500)
-def error500(e):
-    return render_template( 'errors/500.html' ), 500
+@PORTDB.errorhandler(404)
+def error404( error ):
+  """ returns a 404 whenever needed """
+  return render_template( 'errors/404.html' ), 404
+@PORTDB.errorhandler(500)
+def error500( error ):
+  """ returns a 500 error whenever needed """
+  return render_template( 'errors/500.html' ), 500
 
-@app.after_request
-def add_header(response):
+@PORTDB.after_request
+def add_header( response ):
     """
     Add headers to both force latest IE rendering engine or Chrome Frame,
     and also to cache the rendered page for 10 minutes.
@@ -154,4 +156,4 @@ def add_header(response):
 
 
 if __name__ == '__main__':
-	app.run( debug=True )
+	PORTDB.run( debug=True )
