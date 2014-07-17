@@ -2,14 +2,14 @@
 import markdown
 
 import os
-from flask import Flask, render_template, request, url_for, jsonify
+from flask import Flask, render_template, request, url_for, jsonify, abort
+
 
 def getnotes( proto, port ):
   """ String getnotes( String proto, Int port )
   returns a markdown-rendered version of a notes file for a given proto/port combination
   returns False if the file doesn't exist.
   """
-  notes = ""
   filename_notes = "{}notes.md".format( datadir( proto, port ) )
   if( os.path.exists( filename_notes ) ):
     with open( filename_notes, 'r' ) as fh:
