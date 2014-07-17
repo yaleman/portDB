@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, jsonify
+""" Web interface and implementation of portDB
 
 
 import markdown
@@ -86,8 +86,9 @@ def viewproto( proto, page ):
 
 @app.route('/view/<proto>/<int:port>', methods=['GET'] )
 def view( proto, port ):
-	proto = proto.lower()
-	if avoidnasty( proto, port ):
+  """" presents the view of a protocol/port combination """
+  proto = proto.lower()
+  if avoidnasty( proto, port ):
 		ianafile = '{}iana.md'.format( datadir( proto, port ) )
 		if os.path.exists( ianafile ):
 			iana = markdown.markdown( open( ianafile, 'r' ).read() )
@@ -113,6 +114,7 @@ def searchports( proto, searchterm ):
 
 @app.route( '/api/search/<searchterm>/search.json', methods=[ 'GET' ] )
 def apisearch( searchterm ):
+  """ this is the start of the API search functionality, still doesn't work """
   data = []
   for proto in protocols:
     tmp = [ port for port in portlist( proto ) if searchterm in port ]
