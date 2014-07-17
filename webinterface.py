@@ -1,4 +1,5 @@
 """ Web interface and implementation of portDB
+see the running version at http://portdb.yaleman.org """
 from flask import Flask, render_template, request, url_for, jsonify, abort
 
 
