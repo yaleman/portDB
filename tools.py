@@ -1,3 +1,4 @@
+""" This is the tools library for the portDB project """
 import markdown
 
 import os
@@ -55,3 +56,4 @@ def levenshtein(s1, s2):
         previous_row = current_row
 
     return previous_row[-1]
+  """ calculate the levenshtein distance between two strings """
