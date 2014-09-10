@@ -22,6 +22,7 @@ PROTOCOLS = { 'tcp' : "Transmission Control Protocol",
       'udp' : "User Datagram Protocol"
       }
 
+
 def portlist( proto=None ):
 	""" returns a list of ports (as strings) based on a proto """
 	# TODO: write tests for this, it should be doable.
@@ -29,6 +30,7 @@ def portlist( proto=None ):
 		proto = proto.lower()
 		ports = [ port for port in os.listdir( datadir( proto ) ) if port != '.DS_Store' ]
 		return ports
+
 
 def avoidnasty( proto, port=None ):
 	"""
@@ -40,20 +42,24 @@ def avoidnasty( proto, port=None ):
 		return False
 	return True
 
+
 @PORTDB.route( '/' )
 def index():
 	""" the site homepage, lists protocols """
 	return render_template( "index.html", protocols=PROTOCOLS )
+
 
 @PORTDB.route( '/about' )
 def about():
   """ return the README.md file in the default template """
   return render_template( "about.html", readme=markdown.markdown( open( 'README.md', 'r' ).read() ) )
 
+
 @PORTDB.route( '/contributing' )
 def contributing():
   """ displays the page where people can find out about helping """
   return render_template( "contributing.html" )
+
 
 @PORTDB.route('/view/<proto>', defaults={'page': 1})
 @PORTDB.route('/view/<proto>/page/<int:page>')
@@ -86,6 +92,7 @@ def viewproto( proto, page ):
 		else:
 			return index()
 
+
 @PORTDB.route('/view/<proto>/<int:port>', methods=['GET'] )
 def view( proto, port ):
   """" presents the view of a protocol/port combination """
@@ -97,6 +104,7 @@ def view( proto, port ):
 		else:
 			iana = False
 		return render_template( "view.html", proto=proto, port=port, notes=getnotes( proto, port ), iana=iana )
+
 
 def searchports( proto, searchterm ):
 	""" supply the proto and the searchterm and it'll respond with the list of ports and if there's more than 5 """
@@ -110,8 +118,6 @@ def searchports( proto, searchterm ):
 		ismore = True
 		ports = ports[:maxresponses]
 	return ports, ismore
-
-
 
 
 @PORTDB.route( '/api/search/<searchterm>/search.json', methods=[ 'GET' ] )
@@ -135,14 +141,23 @@ def api( proto, port ):
   return json.dumps( data )
 
 
+@PORTDB.route('/robots.txt' )
+def robots( ):
+    """ return the robots.txt file """
+    return 'User-agent: *\nDisallow:'
+
+    
 @PORTDB.errorhandler(404)
 def error404( error ):
   """ returns a 404 whenever needed """
   return render_template( 'errors/404.html' ), 404
+
+
 @PORTDB.errorhandler(500)
 def error500( error ):
   """ returns a 500 error whenever needed """
   return render_template( 'errors/500.html' ), 500
+
 
 @PORTDB.after_request
 def add_header( response ):
