@@ -94,6 +94,7 @@ def viewproto( proto, page ):
 
 
 @PORTDB.route('/view/<proto>/<int:port>', methods=['GET'] )
+@PORTDB.route('/view/<proto>/<int:port>/', methods=['GET'] )
 def view( proto, port ):
   """" presents the view of a protocol/port combination """
   proto = proto.lower()
