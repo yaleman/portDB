@@ -100,12 +100,15 @@ def view( proto, port ):
   proto = proto.lower()
   if avoidnasty( proto, port ):
 		ianafile = '{}iana.md'.format( datadir( proto, port ) )
+		notesfile = '{}notes.md'.format( datadir( proto, port ) )
+		iana = False
+		notes = False
 		if os.path.exists( ianafile ):
 			iana = markdown.markdown( open( ianafile, 'r' ).read() )
-		else:
-			iana = False
-		return render_template( "view.html", proto=proto, port=port, notes=getnotes( proto, port ), iana=iana )
-
+		if os.path.exists( notesfile ):
+			with open( notesfile, 'r' ) as fh:
+				notes = markdown.markdown( fh.read().decode( 'utf-8' ) )
+		return render_template( "view.html", proto=proto, port=port, notes=notes, iana=iana )
 
 def searchports( proto, searchterm ):
 	""" supply the proto and the searchterm and it'll respond with the list of ports and if there's more than 5 """
