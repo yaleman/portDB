@@ -1,1 +1,1 @@
-web: newrelic-admin run-program gunicorn webinterface:PORTDB
+web: gunicorn webinterface:PORTDB
