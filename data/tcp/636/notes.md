@@ -1,0 +1,1 @@
+[LDAP over SSL](http://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol#Protocol_overview), see also [tcp/389](/view/tcp/389) for standard LDAP.
