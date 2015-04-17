@@ -1,0 +1,2 @@
+* [Virtual Network Computing (VNC)](https://en.wikipedia.org/wiki/Virtual_Network_Computing) - a graphical desktop sharing system that uses the [Remote Frame Buffer protocol (RFB)](https://en.wikipedia.org/wiki/RFB_protocol) to remotely control another computer.
+ * [Apple Remote Desktop](https://support.apple.com/en-au/HT202944) - uses VNC
