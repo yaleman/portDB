@@ -1,0 +1,11 @@
+{% extends "errors/error.html" %}
+{% block title %}403 Unauthorized{% endblock %}
+
+{% block heading %}
+{{ super() }} 404 Unauthorized
+{% endblock %}
+
+{% block body %}
+  
+  <p>You probably should <a href="{{ url_for('index') }}">go somewhere nice</a></p>
+{% endblock %}

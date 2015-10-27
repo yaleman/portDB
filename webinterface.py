@@ -1,24 +1,47 @@
 """ Web interface and implementation of portDB
 see the running version at http://portdb.yaleman.org """
 
-
-from flask import Flask, render_template, abort
-import markdown
-from os import path, listdir
-from tools import datadir, url_for_other_page
-import json
-
-
+# edit this to show where the app is installed
+PROJECT_DIR='/home/portdb/portDB/'
 PROTOCOLS = {'tcp' : "Transmission Control Protocol", 'udp' : "User Datagram Protocol"}
 
+# load libs
 
-# initialize the web app
-PORTDB = Flask(__name__)
-PORTDB.jinja_env.globals['url_for_other_page'] = url_for_other_page
+from os import path, listdir
+import sys
 
-# going to hard code the protocols
-#protocols = [p.lower() for p in listdir('data/') if p != '.DS_Store']
+# setup the required wsgi/environment stuff
+if __name__ != '__main__':
+	activate_this = path.join(PROJECT_DIR, 'venv', 'bin', 'activate_this.py')
+	execfile(activate_this, dict(__file__=activate_this))
+	sys.path.append(PROJECT_DIR)
 
+from flask import request, Flask, url_for, render_template, abort
+import markdown
+import json
+
+# helper functions
+
+
+def datadir(proto, port=None):
+    """ String datadir( String proto, Int port )
+    returns the appropriate data directory based on the protocol/port supplied
+    """
+    if "." in proto:
+        abort(403)
+    if port is None:
+        protodir = '{}data/{}/'.format(PROJECT_DIR,proto.lower())
+        # check if the path actually exists
+        if path.exists(protodir):
+            return protodir
+        else:
+            abort(404)
+    else:
+        linkdir = "{}data/{}/{}/".format(PROJECT_DIR, proto.lower(), port)
+        if path.exists(linkdir):
+            return linkdir
+        else:
+            abort(404)
 
 
 def portlist(proto=None):
@@ -38,10 +61,24 @@ def avoidnasty(proto, port):
 		abort(404)
         #return False
 	if port != None:
-		if str( port ) not in listdir('data/{}'.format(proto)):
+		if str( port ) not in listdir('{}/data/{}'.format(PROJECT_DIR, proto)):
 			abort(404)
 	return True
 
+
+def url_for_other_page(page):
+    """ Provides the URL for another page  based on the function endpoint.
+    """
+    args = request.view_args.copy()
+    args['page'] = page
+    return url_for(request.endpoint, **args)
+
+
+# initialize the web app
+PORTDB = Flask(__name__)
+PORTDB.jinja_env.globals['url_for_other_page'] = url_for_other_page
+
+# web app code 
 
 @PORTDB.route('/')
 def index():
@@ -52,7 +89,7 @@ def index():
 @PORTDB.route('/about')
 def about():
   """ return the README.md file in the default template """
-  return render_template("about.html", readme=markdown.markdown(open('README.md', 'r').read()))
+  return render_template("about.html", readme=markdown.markdown(open('{}/README.md'.format( PROJECT_DIR ), 'r').read()))
 
 
 @PORTDB.route('/contributing')
@@ -149,6 +186,13 @@ def robots():
     """ return the robots.txt file """
     return 'User-agent: *\nDisallow:'
 
+@PORTDB.errorhandler(403)
+def error403(error):
+  """ returns a 403 """
+  if error:
+    pass
+  return render_template('errors/403.html'), 403
+
 
 @PORTDB.errorhandler(404)
 def error404(error):
@@ -179,3 +223,7 @@ def add_header(response):
 
 if __name__ == '__main__':
 	PORTDB.run(debug=True)
+
+else:
+	application=PORTDB
+#from webinterface  import PORTDB as application
