@@ -1,14 +1,14 @@
 """ Web interface and implementation of portDB
 see the running version at http://portdb.yaleman.org """
 
-# edit this to show where the app is installed
-PROJECT_DIR='/home/portdb/portDB/'
-PROTOCOLS = {'tcp' : "Transmission Control Protocol", 'udp' : "User Datagram Protocol"}
-
-# load libs
 
 from os import path, listdir
 import sys
+import json
+
+# edit this to show where the app is installed
+PROJECT_DIR = '/home/portdb/portDB/'
+PROTOCOLS = {'tcp' : "Transmission Control Protocol", 'udp' : "User Datagram Protocol"}
 
 # setup the required wsgi/environment stuff
 if __name__ != '__main__':
@@ -18,10 +18,9 @@ if __name__ != '__main__':
 
 from flask import request, Flask, url_for, render_template, abort
 import markdown
-import json
+
 
 # helper functions
-
 
 def datadir(proto, port=None):
     """ String datadir( String proto, Int port )
@@ -30,7 +29,7 @@ def datadir(proto, port=None):
     if "." in proto:
         abort(403)
     if port is None:
-        protodir = '{}data/{}/'.format(PROJECT_DIR,proto.lower())
+        protodir = '{}data/{}/'.format(PROJECT_DIR, proto.lower())
         # check if the path actually exists
         if path.exists(protodir):
             return protodir
@@ -47,7 +46,7 @@ def datadir(proto, port=None):
 def portlist(proto=None):
 	""" returns a list of ports (as strings) based on a proto """
 	# TODO: write tests for this, it should be doable.
-	if avoidnasty(proto,  None):
+	if avoidnasty(proto, None):
 		proto = proto.lower()
 		ports = [port for port in listdir(datadir(proto)) if port != '.DS_Store']
 		return ports
@@ -61,7 +60,7 @@ def avoidnasty(proto, port):
 		abort(404)
         #return False
 	if port != None:
-		if str( port ) not in listdir('{}/data/{}'.format(PROJECT_DIR, proto)):
+		if str(port) not in listdir('{}/data/{}'.format(PROJECT_DIR, proto)):
 			abort(404)
 	return True
 
@@ -78,7 +77,7 @@ def url_for_other_page(page):
 PORTDB = Flask(__name__)
 PORTDB.jinja_env.globals['url_for_other_page'] = url_for_other_page
 
-# web app code 
+# web app code
 
 @PORTDB.route('/')
 def index():
@@ -89,7 +88,7 @@ def index():
 @PORTDB.route('/about')
 def about():
   """ return the README.md file in the default template """
-  return render_template("about.html", readme=markdown.markdown(open('{}/README.md'.format( PROJECT_DIR ), 'r').read()))
+  return render_template("about.html", readme=markdown.markdown(open('{}/README.md'.format(PROJECT_DIR), 'r').read()))
 
 
 @PORTDB.route('/contributing')
@@ -129,24 +128,24 @@ def viewproto(proto, page):
 			return index()
 
 
-@PORTDB.route('/view/<proto>/<int:port>', methods=['GET'])
-@PORTDB.route('/view/<proto>\%2F<int:port>', methods=['GET'])
-@PORTDB.route('/view/<proto>/<int:port>/', methods=['GET'])
-@PORTDB.route('/view/<proto>\%2F<int:port>/', methods=['GET'])
+@PORTDB.route(r'/view/<proto>/<int:port>', methods=['GET'])
+@PORTDB.route(r'/view/<proto>\%2F<int:port>', methods=['GET'])
+@PORTDB.route(r'/view/<proto>/<int:port>/', methods=['GET'])
+@PORTDB.route(r'/view/<proto>\%2F<int:port>/', methods=['GET'])
 def view(proto, port):
   """" presents the view of a protocol/port combination """
   proto = proto.lower()
   if avoidnasty(proto, port):
-		ianafile = '{}iana.md'.format(datadir(proto, port))
-		notesfile = '{}notes.md'.format(datadir(proto, port))
-		iana = False
-		notes = False
-		if path.exists(ianafile):
-			iana = markdown.markdown(open(ianafile, 'r').read())
-		if path.exists(notesfile):
-			with open(notesfile, 'r') as filehandle:
-				notes = markdown.markdown(filehandle.read().decode('utf-8'))
-		return render_template("view.html", proto=proto, port=port, notes=notes, iana=iana)
+        ianafile = '{}iana.md'.format(datadir(proto, port))
+        notesfile = '{}notes.md'.format(datadir(proto, port))
+        iana = False
+        notes = False
+        if path.exists(ianafile):
+                iana = markdown.markdown(open(ianafile, 'r').read())
+        if path.exists(notesfile):
+                with open(notesfile, 'r') as filehandle:
+                        notes = markdown.markdown(filehandle.read().decode('utf-8'))
+        return render_template("view.html", proto=proto, port=port, notes=notes, iana=iana)
 
 def searchports(proto, searchterm):
 	""" supply the proto and the searchterm and it'll respond with the list of ports and if there's more than 5 """
@@ -227,5 +226,5 @@ if __name__ == '__main__':
 	PORTDB.run(debug=True)
 
 else:
-	application=PORTDB
+	application = PORTDB
 #from webinterface  import PORTDB as application
